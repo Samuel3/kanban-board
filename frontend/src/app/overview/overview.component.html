@@ -1,0 +1,20 @@
+<div>
+    <h1>Welcome to Kanban Board App</h1>
+    <div class="container">
+    <mat-card *ngFor="let board of boards" class="card">
+        <mat-card-content (click)="openBoard(board)">{{board}}</mat-card-content>
+    </mat-card>
+    <mat-card class="card" *ngIf="!showDialog">
+        <mat-card-content (click)="showDialog=true">Create new board</mat-card-content>
+    </mat-card>
+    <mat-form-field *ngIf="showDialog">
+        <mat-label>What's the name of the new Board?</mat-label>
+        <input matInput [formControl]="boardNameFormControl" [errorStateMatcher]="matcher">
+        @if (boardNameFormControl.hasError('required')) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+        }
+        <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="createNewBoard()" [disabled]="boardNameFormControl.hasError('required')" >Ok</button>
+    </mat-form-field>
+    </div>
+</div>

@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    project ':frontend'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
@@ -39,3 +40,15 @@ tasks.withType(KotlinCompile) {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+task copyFrontend(type: Copy) {
+//    dependsOn project(':frontend').tasks.named('build')
+    from project(':frontend').file('dist/todo-frontend/browser')
+    into 'src/main/resources/static'
+}
+
+tasks.named("processResources") {
+    dependsOn copyFrontend
+}
+
+bootJar.dependsOn copyFrontend
