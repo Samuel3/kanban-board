@@ -13,7 +13,4 @@ class RootResource {
     fun redirectWithUsingRedirectPrefix(model: ModelMap): ModelAndView {
         return ModelAndView("forward:/", model)
     }
-
-    @GetMapping("newPath")
-    fun root() = "Welcome to Kanban Server"
 }

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kanban-board.iml" filepath="$PROJECT_DIR$/.idea/modules/kanban-board.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend/kanban-board.backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/backend/kanban-board.backend.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend/kanban-board.backend.test.iml" filepath="$PROJECT_DIR$/.idea/modules/backend/kanban-board.backend.test.iml" />
     </modules>
   </component>
 </project>

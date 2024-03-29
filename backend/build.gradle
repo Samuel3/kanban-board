@@ -28,9 +28,10 @@ dependencies {
     implementation 'com.h2database:h2:2.2.224'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:spring-mock-mvc'
 }
 
-tasks.withType(KotlinCompile) {
+tasks.withType(KotlinCompile).configureEach {
     kotlinOptions {
         freeCompilerArgs += '-Xjsr305=strict'
         jvmTarget = '17'
@@ -41,8 +42,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-task copyFrontend(type: Copy) {
-//    dependsOn project(':frontend').tasks.named('build')
+tasks.register('copyFrontend', Copy) {
     from project(':frontend').file('dist/todo-frontend/browser')
     into 'src/main/resources/static'
 }

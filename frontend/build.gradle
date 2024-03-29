@@ -15,11 +15,11 @@ node {
     npmInstallCommand = 'ci'
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete nodeWorkDir
 }
 
-task build(type: NpmTask) {
+tasks.register('build', NpmTask) {
     dependsOn clean
     args = ['run', 'build']
 }
