@@ -68,6 +68,5 @@
       "style": "scss"
     }
   },
-  "defaultProject": "todo-frontend",
-  "nxCloudAccessToken": "YzdiMGZjMGYtMzNmNi00ZTA2LWJmY2MtMTRiNWJjYmIwZTg0fHJlYWQtd3JpdGU="
+  "defaultProject": "todo-frontend"
 }
