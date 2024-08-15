@@ -44,7 +44,7 @@
     "@playwright/test": "^1.44.1",
     "@schematics/angular": "18.0.2",
     "@swc-node/register": "~1.8.0",
-    "@swc/core": "~1.4.16",
+    "@swc/core": "~1.7.11",
     "@swc/helpers": "~0.5.2",
     "@types/jest": "^29.4.0",
     "@types/node": "20.14.2",
