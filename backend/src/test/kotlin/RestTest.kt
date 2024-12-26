@@ -35,6 +35,6 @@ class RestTest {
             .get("/api/boards")
             .then()
             .statusCode(OK.value())
-            .body(`is`("[]"))
+            .body(`is`("[\"board1\", \"board2\", \"board3\"]"))
     }
 }
