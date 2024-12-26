@@ -9,14 +9,11 @@
           <h2><input [(ngModel)]="list.name" class="heading" (ngModelChange)="synchList()" /></h2>
           @for (item of list.tasks; track item) {
             <div class="task-item" cdkDrag [cdkDragData]="item">
-              <input [value]="item" (keydown)="updateTask($event, lists.indexOf(list), $index)" />
+              <input [value]="item.title" (keydown)="updateTask($event, lists.indexOf(list), $index)" />
               <button>OK</button>
             </div>
           }
-          <div>
-            <input (keydown)="down($event, $index)">
-            <button>OK</button>
-          </div>
+          <app-new-item [callfn]="addTodo.bind(this)" [index]="$index"></app-new-item>
         </div>
       </div>
     }
