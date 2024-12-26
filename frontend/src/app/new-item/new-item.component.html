@@ -1,1 +1,4 @@
-<p>new-item works!</p>
+<div>
+  <input [(ngModel)]="typeValue" (keydown)="onTyping($event)" >
+  <button (click)="createNewItem()">OK</button>
+</div>

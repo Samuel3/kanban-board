@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule} from '@angular/material/input';
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { HttpClient } from '@angular/common/http';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -25,12 +26,18 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class OverviewComponent {
 
-  boards = ["Default"]
+  boards:string[] = []
   showDialog = false;
   boardNameFormControl = new FormControl('', [Validators.required]);
   matcher = new MyErrorStateMatcher();
+  httpClient = inject(HttpClient);
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    console.log("OverviewComponent constructor");
+    this.httpClient.get<string[]>('api/boards').subscribe(data => {
+      this.boards = data;
+    });
+  }
 
   openBoard(name: string) {
     this.router.navigate(['/list', name]);

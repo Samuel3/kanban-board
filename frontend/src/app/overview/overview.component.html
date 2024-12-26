@@ -1,6 +1,9 @@
 <div>
     <h1>Welcome to Kanban Board App</h1>
     <div class="container">
+      @if (boards.length === 0) {
+          <h2>No boards found</h2>
+      }
     <mat-card *ngFor="let board of boards" class="card">
         <mat-card-content (click)="openBoard(board)">{{board}}</mat-card-content>
     </mat-card>

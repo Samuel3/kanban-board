@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
+    "start-dev": "nx serve --proxy-config proxy/proxy.dev.json",
     "build": "nx build",
     "test": "nx test"
   },
