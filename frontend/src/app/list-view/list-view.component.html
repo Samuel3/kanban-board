@@ -2,14 +2,14 @@
   <h1>{{ id }}</h1>
   <div cdkDropListGroup>
 
-    @for (list of lists; track list) {
+    @for (list of board.columns; track list) {
       <div class="example-container">
         <div cdkDropList [cdkDropListData]="list.tasks" (cdkDropListDropped)="drop($event)" class="example-list"
              (change)="change">
           <h2><input [(ngModel)]="list.name" class="heading" (ngModelChange)="synchList()" /></h2>
           @for (item of list.tasks; track item) {
             <div class="task-item" cdkDrag [cdkDragData]="item">
-              <input [value]="item.title" (keydown)="updateTask($event, lists.indexOf(list), $index)" />
+              <input [value]="item.title" (keydown)="updateTask($event, board.columns.indexOf(list), $index)" />
               <button>OK</button>
             </div>
           }

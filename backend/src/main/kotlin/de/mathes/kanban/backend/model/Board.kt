@@ -1,7 +1,30 @@
 package de.mathes.kanban.backend.model
 
-data class Board(val id: String, val name: String, val columns: List<Column>)
+import jakarta.persistence.*
 
-data class Column(val id: String, val name: String, val tasks: List<Card>)
+@Entity
+data class Board(
+    @Id val id: String,
+    val name: String,
+    @ElementCollection
+    @CollectionTable(name = "columns")
+    @OneToMany(cascade = [CascadeType.ALL])
+    val columns: List<Column>
+)
 
-data class Card(val id: String, val title: String)
+@Entity
+data class Column(
+    @Id var id: String?,
+    val name: String,
+    @ElementCollection
+    @CollectionTable(name = "cards")
+    @OneToMany(cascade = [CascadeType.ALL])
+    val tasks: List<Card>
+)
+
+@Entity
+data class Card(
+    @Id val id: String,
+    val title: String
+)
+

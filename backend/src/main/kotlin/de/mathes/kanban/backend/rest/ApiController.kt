@@ -3,17 +3,18 @@ package de.mathes.kanban.backend.rest
 import de.mathes.kanban.backend.model.Board
 import de.mathes.kanban.backend.model.Card
 import de.mathes.kanban.backend.model.Column
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api")
 class ApiController {
 
+    @Autowired
+    var boardRepository: BoardRepository? = null
+
     @GetMapping("boards")
-    fun getBoards() = """["board1", "board2", "board3"]"""
+    fun getBoards() = boardRepository!!.findAll().map { it.name }.toList()
 
     @GetMapping("board/{boardId}")
     fun getBoard(@PathVariable  boardId: String) = Board(boardId, "Board $boardId", listOf(

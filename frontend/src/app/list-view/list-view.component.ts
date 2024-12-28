@@ -6,8 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Board, Column, Task } from './list-view.types';
-import { getDomElements } from '@angular-eslint/eslint-plugin-template/dist/utils/get-dom-elements';
 import { NewItemComponent } from '../new-item/new-item.component';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-list-view',
@@ -27,9 +27,9 @@ import { NewItemComponent } from '../new-item/new-item.component';
 export class ListViewComponent implements OnInit {
   title = 'todo-frontend';
   httpClient = inject(HttpClient);
-
-  lists: Column[] = [];
-  id: string = '';
+  board!: Board;
+  id = '';
+  sync$ = new Subject();
 
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +37,10 @@ export class ListViewComponent implements OnInit {
   ) {
     this.httpClient.get<Board>('api/board/4711').subscribe((data) => {
       console.log(data);
-      this.lists = data.columns;
+      this.board = data;
+    });
+    this.sync$.pipe(debounceTime(300)).subscribe(() => {
+      this.synchList();
     });
   }
 
@@ -60,7 +63,7 @@ export class ListViewComponent implements OnInit {
         event.currentIndex,
       );
     }
-    this.synchList();
+    this.sync$.next(1);
   }
 
   back() {
@@ -69,7 +72,7 @@ export class ListViewComponent implements OnInit {
   }
 
   addColumn() {
-    this.lists.push({ name: 'New Column', id: '', tasks: [] });
+    this.board.columns.push({ name: 'New Column', id: this.generateRandomId(), tasks: [] });
   }
 
   change() {
@@ -77,37 +80,28 @@ export class ListViewComponent implements OnInit {
   }
 
   addTodo(name: string, index: number) {
-    this.lists[index].tasks.push({ title: name, id: '' });
-  }
-
-  down(event: KeyboardEvent, index: number) {
-    if (event.key === 'Enter') {
-      this.addTodo((event.target as HTMLInputElement).value, index);
-      (event.target as HTMLInputElement).value = '';
-    }
-    this.synchList();
-  }
-
-  clickOk(index: number) {
-    const contentHolder = document.getElementById(
-      index.toString(),
-    ) as HTMLInputElement;
-    const todoItem = contentHolder.value ?? '';
-    this.addTodo(todoItem, index);
-    contentHolder.value = '';
-    this.synchList();
+    this.board.columns[index].tasks.push({ title: name, id: this.generateRandomId() });
+    this.sync$.next(1);
   }
 
   synchList() {
     console.log('synchList');
+    const sub = this.httpClient.put('api/board/4711', this.board).subscribe(() => {
+      console.log('done');
+      sub.unsubscribe();
+    });
   }
 
   updateTask(event: KeyboardEvent, index: number, taskIndex: number) {
     if (event.key === 'Enter') {
-      this.lists[index].tasks[taskIndex].title = (
+      this.board.columns[index].tasks[taskIndex].title = (
         event.target as HTMLInputElement
       ).value;
-      this.synchList();
+      this.sync$.next(1);
     }
+  }
+
+  generateRandomId() {
+    return Math.floor(Math.random() * 100000);
   }
 }
