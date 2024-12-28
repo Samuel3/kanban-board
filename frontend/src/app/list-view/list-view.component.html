@@ -1,21 +1,26 @@
-<div>
-    <h1>{{id}}</h1>
-    <div cdkDropListGroup>
-    
-        @for (list of lists; track list) {
-        <div class="example-container">
-        <div cdkDropList [cdkDropListData]="list.tasks" (cdkDropListDropped)="drop($event)" class="example-list">
-            <h2>{{list.name}}</h2>
-            @for (item of list.tasks; track item) {
-            <div class="example-box" cdkDrag [cdkDragData]="item">{{item}}</div>
-            }
+<div class="container">
+  <h1>{{ id }}</h1>
+  <div cdkDropListGroup>
+
+    @for (list of lists; track list) {
+      <div class="example-container">
+        <div cdkDropList [cdkDropListData]="list.tasks" (cdkDropListDropped)="drop($event)" class="example-list"
+             (change)="change">
+          <h2><input [(ngModel)]="list.name" class="heading" (ngModelChange)="synchList()" /></h2>
+          @for (item of list.tasks; track item) {
+            <div class="task-item" cdkDrag [cdkDragData]="item">
+              <input [value]="item.title" (keydown)="updateTask($event, lists.indexOf(list), $index)" />
+              <button>OK</button>
+            </div>
+          }
+          <app-new-item [callfn]="addTodo.bind(this)" [index]="$index"></app-new-item>
         </div>
-        </div>
-        }
-        <div class="example-container">
-            <button mat-raised-button color="accent" (click)="addColumn()">Add a list</button>
-        </div>
+      </div>
+    }
+    <div class="example-container">
+      <button mat-raised-button color="accent" (click)="addColumn()">Add a list</button>
     </div>
-    
-    <button mat-raised-button color="primary" (click)="back()">Back to overview</button>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="back()">Back to overview</button>
 </div>
