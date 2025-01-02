@@ -104,4 +104,9 @@ export class ListViewComponent implements OnInit {
   generateRandomId() {
     return Math.floor(Math.random() * 100000);
   }
+
+  deleteItem(index: number, taskIndex: number) {
+    this.board.columns[index].tasks.splice(taskIndex, 1);
+    this.sync$.next(1);
+  }
 }

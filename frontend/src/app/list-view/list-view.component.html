@@ -11,6 +11,7 @@
             <div class="task-item" cdkDrag [cdkDragData]="item">
               <input [value]="item.title" (keydown)="updateTask($event, board.columns.indexOf(list), $index)" />
               <button>OK</button>
+              <button (click)="deleteItem(board.columns.indexOf(list), $index)">X</button>
             </div>
           }
           <app-new-item [callfn]="addTodo.bind(this)" [index]="$index"></app-new-item>
