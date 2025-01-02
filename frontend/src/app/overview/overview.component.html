@@ -5,7 +5,10 @@
           <h2>No boards found</h2>
       }
     <mat-card *ngFor="let board of boards" class="card">
-        <mat-card-content (click)="openBoard(board)">{{board}}</mat-card-content>
+        <mat-card-content (click)="openBoard(board.id)">{{board.name}}</mat-card-content>
+        <mat-card-actions>
+            <button mat-button color="warn" (click)="deleteBoard(board.id)">Delete</button>
+        </mat-card-actions>
     </mat-card>
     <mat-card class="card" *ngIf="!showDialog">
         <mat-card-content (click)="showDialog=true">Create new board</mat-card-content>

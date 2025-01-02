@@ -1,16 +1,16 @@
 export type Board = {
-  id: string
+  id: number;
   name: string;
   columns: Column[];
 }
 
 export type Column = {
-  id: string
+  id: number;
   name: string;
   tasks: Task[];
 }
 
 export type Task = {
-  id: string
+  id: number;
   title: string;
 }
