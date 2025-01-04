@@ -1,11 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CdkDrag, CdkDropList, CdkDropListGroup, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Board, Column, Task } from './list-view.types';
+import { Board, Task } from './list-view.types';
 import { NewItemComponent } from '../new-item/new-item.component';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -35,12 +42,12 @@ export class ListViewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) {
-    this.httpClient.get<Board>('api/board/4711').subscribe((data) => {
-      console.log(data);
+    this.id = this.route.snapshot.paramMap.get('id') || '';
+    this.httpClient.get<Board>('api/board/' + this.id).subscribe((data) => {
       this.board = data;
     });
     this.sync$.pipe(debounceTime(300)).subscribe(() => {
-      this.synchList();
+      this.syncList();
     });
   }
 
@@ -72,33 +79,39 @@ export class ListViewComponent implements OnInit {
   }
 
   addColumn() {
-    this.board.columns.push({ name: 'New Column', id: this.generateRandomId(), tasks: [] });
-  }
-
-  change() {
-    console.log('change');
-  }
-
-  addTodo(name: string, index: number) {
-    this.board.columns[index].tasks.push({ title: name, id: this.generateRandomId() });
-    this.sync$.next(1);
-  }
-
-  synchList() {
-    console.log('synchList');
-    const sub = this.httpClient.put('api/board/4711', this.board).subscribe(() => {
-      console.log('done');
-      sub.unsubscribe();
+    this.board.columns.push({
+      name: 'New Column',
+      id: this.generateRandomId(),
+      tasks: [],
     });
   }
 
+  change() {
+    this.sync$.next(1);
+  }
+
+  addTodo(name: string, index: number) {
+    this.board.columns[index].tasks.push({
+      title: name,
+      id: this.generateRandomId(),
+    });
+    this.sync$.next(1);
+  }
+
+  syncList() {
+    const sub = this.httpClient
+      .put('api/board/' + this.id, this.board)
+      .subscribe(() => {
+        console.log('done');
+        sub.unsubscribe();
+      });
+  }
+
   updateTask(event: KeyboardEvent, index: number, taskIndex: number) {
-    if (event.key === 'Enter') {
-      this.board.columns[index].tasks[taskIndex].title = (
-        event.target as HTMLInputElement
-      ).value;
-      this.sync$.next(1);
-    }
+    this.board.columns[index].tasks[taskIndex].title = (
+      event.target as HTMLInputElement
+    ).value;
+    this.sync$.next(1);
   }
 
   generateRandomId() {

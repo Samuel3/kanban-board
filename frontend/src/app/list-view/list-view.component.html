@@ -1,16 +1,17 @@
 <div class="container">
-  <h1>{{ id }}</h1>
+  <h1>
+    <input [(ngModel)]="this.board.name" class="heading h1" (ngModelChange)="change()" />
+  </h1>
   <div cdkDropListGroup>
 
     @for (list of board.columns; track list) {
       <div class="example-container">
         <div cdkDropList [cdkDropListData]="list.tasks" (cdkDropListDropped)="drop($event)" class="example-list"
-             (change)="change">
-          <h2><input [(ngModel)]="list.name" class="heading" (ngModelChange)="synchList()" /></h2>
+             (change)="change()">
+          <h2><input [(ngModel)]="list.name" class="heading" (ngModelChange)="change()" /></h2>
           @for (item of list.tasks; track item) {
             <div class="task-item" cdkDrag [cdkDragData]="item">
-              <input [value]="item.title" (keydown)="updateTask($event, board.columns.indexOf(list), $index)" />
-              <button>OK</button>
+              <input [value]="item.title" (keydown)="updateTask($event, board.columns.indexOf(list), $index)" (change)="change()"/>
               <button (click)="deleteItem(board.columns.indexOf(list), $index)">X</button>
             </div>
           }
