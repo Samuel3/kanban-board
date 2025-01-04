@@ -19,6 +19,11 @@ class BoardService {
     fun updateBoard(board: Board) = boardRepository.save(board)
 
     fun deleteBoard(boardId: String) = boardRepository.deleteById(boardId)
+
+    fun createBoard(boardName: String): List<BoardDto> {
+        boardRepository.save(Board(UUID.randomUUID().toString(), boardName, listOf()))
+        return getAllBoards()
+    }
 }
 
 data class BoardDto(val id: String, val name: String)
