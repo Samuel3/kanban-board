@@ -9,6 +9,8 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClient } from '@angular/common/http';
 import { BoardDefinition } from './overview.types';
+import { MatDialog } from '@angular/material/dialog';
+import { DeletionDialogComponent } from '../deletion-dialog/deletion-dialog.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -46,6 +48,7 @@ export class OverviewComponent {
   boardNameFormControl = new FormControl('', [Validators.required]);
   matcher = new MyErrorStateMatcher();
   httpClient = inject(HttpClient);
+  dialog = inject(MatDialog);
 
   constructor(private router: Router) {
     console.log('OverviewComponent constructor');
@@ -58,12 +61,21 @@ export class OverviewComponent {
     this.router.navigate(['/list', name]);
   }
 
+  onKeyDown($event: KeyboardEvent) {
+    if ($event.key === 'Enter') {
+      this.createNewBoard();
+    }
+  }
+
   createNewBoard() {
     this.showDialog = false;
-    this.boards.push({
-      id: this.boardNameFormControl.value ?? '',
-      name: this.boards.length.toString(),
-    });
+    this.httpClient
+      .post<
+        BoardDefinition[]
+      >('api/board/' + this.boardNameFormControl.value, {})
+      .subscribe((data) => {
+        this.boards = data;
+      });
     this.boardNameFormControl.reset();
   }
 
@@ -73,7 +85,8 @@ export class OverviewComponent {
   }
 
   deleteBoard(id: string) {
-    this.boards = this.boards.filter((board) => board.id !== id);
-    this.httpClient.delete(`api/board/${id}`).subscribe();
+    this.dialog.open(DeletionDialogComponent, {
+      data: { id: id, name: name },
+    });
   }
 }
