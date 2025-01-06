@@ -1,16 +1,18 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id 'org.springframework.boot' version '3.3.0'
+    id 'org.springframework.boot' version '3.1.0'
     id 'io.spring.dependency-management' version '1.1.5'
     id 'org.jetbrains.kotlin.jvm' version '2.0.0'
     id 'org.jetbrains.kotlin.plugin.spring' version '2.0.0'
     id 'org.jetbrains.kotlin.plugin.jpa' version '2.0.0'
     id "com.github.ben-manes.versions" version '0.51.0'
+//    id 'org.graalvm.buildtools.native' version '0.10.4'
 }
 
 group = 'de.mathes'
 version = '0.0.1-SNAPSHOT'
+ext.mockkVersion = '1.12.0'
 
 java {
     sourceCompatibility = '17'
@@ -26,11 +28,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
-    runtimeOnly 'com.h2database:h2'
+    implementation 'org.xerial:sqlite-jdbc:3.25.2'
+    implementation 'org.hibernate.orm:hibernate-community-dialects'
+
+//    runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation "org.mockito:mockito-core:5.15.2"
 }
 
 tasks.withType(KotlinCompile).configureEach {
@@ -54,3 +60,25 @@ tasks.named("processResources") {
 }
 
 bootJar.dependsOn copyFrontend
+
+//graalvmNative {
+//    binaries {
+//        all {
+//            buildArgs.add("--enable-preview")
+//        }
+//    }
+//}
+
+//tasks.register('prepareNative') {
+//    dependsOn copyFrontend
+//    doLast {
+//        exec {
+//            workingDir '.'
+//            commandLine 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvarsall.bat', 'x64'
+//        }
+//    }
+//}
+//
+//tasks.named('nativeCompile') {
+//    dependsOn tasks.named('prepareNative')
+//}

@@ -1,34 +1,39 @@
 package de.mathes.kanban.backend.rest
 
 import de.mathes.kanban.backend.model.Board
-import de.mathes.kanban.backend.model.Card
-import de.mathes.kanban.backend.model.Column
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import de.mathes.kanban.backend.service.BoardDto
+import de.mathes.kanban.backend.service.BoardService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api")
 class ApiController {
 
+    @Autowired
+    lateinit var boardService: BoardService
+
     @GetMapping("boards")
-    fun getBoards() = """["board1", "board2", "board3"]"""
+    fun getBoards() = boardService.getAllBoards()
 
     @GetMapping("board/{boardId}")
-    fun getBoard(@PathVariable  boardId: String) = Board(boardId, "Board $boardId", listOf(
-        Column("4711", "To Do", listOf(
-            Card("1", "1st"),
-            Card("2", "2nd"),
-            Card("3", "3rd")
-        )),
-        Column("4712", "In Progress", listOf(
-            Card("4", "4th"),
-            Card("5", "5th")
-        )),
-        Column("4713", "Done", listOf(
-            Card("6", "6th")
-        ))
-    ))
+    fun getBoard(@PathVariable  boardId: String): Board? {
+        return boardService.getBoard(boardId)
+    }
+
+    @PostMapping("board/{boardName}")
+    fun createBoard(@PathVariable boardName: String): List<BoardDto> {
+        return boardService.createBoard(boardName)
+    }
+
+    @PutMapping("board/{boardId}")
+    fun updateBoard(@PathVariable boardId: String, @RequestBody board: Board): Board {
+        return boardService.updateBoard(board)
+    }
+
+    @DeleteMapping("board/{boardId}")
+    fun deleteBoard(@PathVariable boardId: String) {
+        boardService.deleteBoard(boardId)
+    }
 
 }

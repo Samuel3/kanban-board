@@ -1,23 +1,35 @@
 <div>
-    <h1>Welcome to Kanban Board App</h1>
-    <div class="container">
-      @if (boards.length === 0) {
-          <h2>No boards found</h2>
-      }
+  <h1>Welcome to Kanban Board App</h1>
+  <div class="container">
+    @if (boards.length === 0) {
+      <h2>No boards found</h2>
+    }
     <mat-card *ngFor="let board of boards" class="card">
-        <mat-card-content (click)="openBoard(board)">{{board}}</mat-card-content>
+      <mat-card-content>
+        <button mat-raised-button color="primary" (click)="openBoard(board.id)">{{ board.name }}</button>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="warn" (click)="deleteBoard(board.id)">Delete</button>
+      </mat-card-actions>
     </mat-card>
     <mat-card class="card" *ngIf="!showDialog">
-        <mat-card-content (click)="showDialog=true">Create new board</mat-card-content>
+      <mat-card-content>
+        <button mat-raised-button color="primary" (click)="showDialog=true">Create new board</button>
+      </mat-card-content>
     </mat-card>
-    <mat-form-field *ngIf="showDialog">
+    <mat-card class="card" *ngIf="showDialog">
+      <mat-form-field>
         <mat-label>What's the name of the new Board?</mat-label>
-        <input matInput [formControl]="boardNameFormControl" [errorStateMatcher]="matcher">
+        <input matInput [formControl]="boardNameFormControl" [errorStateMatcher]="matcher"
+               (keydown)="onKeyDown($event)">
         @if (boardNameFormControl.hasError('required')) {
-            <mat-error>Email is <strong>required</strong></mat-error>
+          <mat-error>A name is <strong>required</strong></mat-error>
         }
         <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
-        <button mat-raised-button color="primary" (click)="createNewBoard()" [disabled]="boardNameFormControl.hasError('required')" >Ok</button>
-    </mat-form-field>
-    </div>
+        <button mat-raised-button color="primary" (click)="createNewBoard()"
+                [disabled]="boardNameFormControl.hasError('required')">Ok
+        </button>
+      </mat-form-field>
+    </mat-card>
+  </div>
 </div>
