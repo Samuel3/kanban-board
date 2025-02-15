@@ -1,7 +1,7 @@
 package de.mathes.kanban.backend.service
 
 import de.mathes.kanban.backend.model.Board
-import de.mathes.kanban.backend.rest.BoardRepository
+import de.mathes.kanban.backend.model.BoardRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID

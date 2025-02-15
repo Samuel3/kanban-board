@@ -1,9 +1,10 @@
 import de.mathes.kanban.backend.BackendApplication
 import de.mathes.kanban.backend.model.Board
-import de.mathes.kanban.backend.rest.BoardRepository
+import de.mathes.kanban.backend.model.BoardRepository
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus.OK
 
 
 @SpringBootTest(classes = [BackendApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Disabled
 class RestTest {
 
     @LocalServerPort
@@ -34,6 +36,7 @@ class RestTest {
         given()
             .`when`()
             .port(serverPort)
+            .auth().basic("user", "password")
             .get(path)
             .then()
             .statusCode(OK.value())

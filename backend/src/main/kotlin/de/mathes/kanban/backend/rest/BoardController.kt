@@ -5,35 +5,35 @@ import de.mathes.kanban.backend.service.BoardDto
 import de.mathes.kanban.backend.service.BoardService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("api")
-class ApiController {
+class BoardController {
 
     @Autowired
     lateinit var boardService: BoardService
 
     @GetMapping("boards")
-    fun getBoards() = boardService.getAllBoards()
+    fun getBoards(principal: Principal) = boardService.getAllBoards()
 
     @GetMapping("board/{boardId}")
-    fun getBoard(@PathVariable  boardId: String): Board? {
+    fun getBoard(@PathVariable  boardId: String, principal: Principal): Board? {
         return boardService.getBoard(boardId)
     }
 
     @PostMapping("board/{boardName}")
-    fun createBoard(@PathVariable boardName: String): List<BoardDto> {
+    fun createBoard(@PathVariable boardName: String, principal: Principal): List<BoardDto> {
         return boardService.createBoard(boardName)
     }
 
     @PutMapping("board/{boardId}")
-    fun updateBoard(@PathVariable boardId: String, @RequestBody board: Board): Board {
+    fun updateBoard(@PathVariable boardId: String, @RequestBody board: Board, principal: Principal): Board {
         return boardService.updateBoard(board)
     }
 
     @DeleteMapping("board/{boardId}")
-    fun deleteBoard(@PathVariable boardId: String) {
+    fun deleteBoard(@PathVariable boardId: String, principal: Principal) {
         boardService.deleteBoard(boardId)
     }
-
 }

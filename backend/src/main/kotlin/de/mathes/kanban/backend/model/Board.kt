@@ -1,11 +1,12 @@
 package de.mathes.kanban.backend.model
 
 import jakarta.persistence.*
-
 @Entity
 data class Board(
     @Id val id: String,
+
     val name: String,
+
     @ElementCollection
     @CollectionTable(name = "columns")
     @OneToMany(cascade = [CascadeType.ALL])

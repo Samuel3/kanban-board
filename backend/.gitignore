@@ -1,4 +1,6 @@
-**/src/main/resouces/static
+**/src/main/resouces/static/
+// Ignore the content of static folder in the resources directory
+src/main/resources/static/*
 todos.db
 todos.db-shm
 todos.db-wal
