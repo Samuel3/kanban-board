@@ -56,7 +56,7 @@ export class LoginComponent {
       this.usernameControl.value + ':' + this.passwordControl.value,
     );
     this.httpClient
-      .get('auth/login', { headers: { Basic: authentication } })
+      .get('auth/login', { headers: { "Authorization": `Basic ${authentication}` } })
       .subscribe(_ => {
         localStorage.setItem('auth', authentication);
         this.router.navigate(['/']);
@@ -64,18 +64,7 @@ export class LoginComponent {
   }
 
   register() {
-    this.httpClient
-      .post('auth/register', {
-        name: this.usernameControl.value,
-        password: this.passwordControl.value,
-      })
-      .subscribe(_ => {
-        localStorage.setItem(
-          'auth',
-          btoa(this.usernameControl.value + ':' + this.passwordControl.value),
-        );
-        this.router.navigate(['/']);
-      });
+    this.router.navigate(['/register']);
   }
 
   protected readonly console = console;

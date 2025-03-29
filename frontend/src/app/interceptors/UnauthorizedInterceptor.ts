@@ -8,6 +8,13 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (localStorage.getItem('auth')) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Basic ${localStorage.getItem('auth')}`
+        }
+      })
+    }
     return next.handle(req).pipe(
       tap(() => {
         console.log('Request sent');

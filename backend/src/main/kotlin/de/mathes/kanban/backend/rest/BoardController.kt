@@ -15,25 +15,27 @@ class BoardController {
     lateinit var boardService: BoardService
 
     @GetMapping("boards")
-    fun getBoards(principal: Principal) = boardService.getAllBoards()
+    fun getBoards(principal: Principal): List<BoardDto> {
+        return boardService.getAllBoards(principal)
+    }
 
     @GetMapping("board/{boardId}")
     fun getBoard(@PathVariable  boardId: String, principal: Principal): Board? {
-        return boardService.getBoard(boardId)
+        return boardService.getBoard(boardId, principal)
     }
 
     @PostMapping("board/{boardName}")
     fun createBoard(@PathVariable boardName: String, principal: Principal): List<BoardDto> {
-        return boardService.createBoard(boardName)
+        return boardService.createBoard(boardName, principal)
     }
 
     @PutMapping("board/{boardId}")
     fun updateBoard(@PathVariable boardId: String, @RequestBody board: Board, principal: Principal): Board {
-        return boardService.updateBoard(board)
+        return boardService.updateBoard(board, principal)
     }
 
     @DeleteMapping("board/{boardId}")
     fun deleteBoard(@PathVariable boardId: String, principal: Principal) {
-        boardService.deleteBoard(boardId)
+        boardService.deleteBoard(boardId, principal)
     }
 }

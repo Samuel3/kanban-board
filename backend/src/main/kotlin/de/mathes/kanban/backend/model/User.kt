@@ -1,9 +1,6 @@
 package de.mathes.kanban.backend.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import org.hibernate.annotations.JavaType
 import org.hibernate.type.descriptor.java.CharacterArrayJavaType
 
@@ -17,4 +14,9 @@ class User {
     var name: String? = null
 
     var password: String? = null
+
+    @ElementCollection
+    @CollectionTable(name = "boards")
+    @OneToMany(cascade = [CascadeType.ALL])
+    var boards: MutableList<Board> = mutableListOf()
 }
