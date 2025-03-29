@@ -16,9 +16,6 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       })
     }
     return next.handle(req).pipe(
-      tap(() => {
-        console.log('Request sent');
-      }),
       catchError((err: HttpErrorResponse) => {
         if (err.status === 403 || err.status === 401 || err.status === 500) {
           localStorage.removeItem('auth');
