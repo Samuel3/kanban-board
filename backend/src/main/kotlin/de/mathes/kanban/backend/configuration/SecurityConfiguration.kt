@@ -29,7 +29,14 @@ class SecurityConfiguration(val userService: UserService) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .httpBasic { }
+            .httpBasic { basic ->
+                basic.authenticationEntryPoint { request, response, authException ->
+                    // Nur für API-Endpunkte den 401 Status zurückgeben
+                    if (request.requestURI.startsWith("/api/")) {
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+                    }
+                }
+            }
             .csrf {
                 it.disable()
             }
