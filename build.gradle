@@ -1,0 +1,6 @@
+// Gradle Wrapper task
+
+tasks.named('wrapper').configure {
+    gradleVersion = '8.13'
+    distributionType = Wrapper.DistributionType.ALL
+}
