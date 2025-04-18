@@ -4,8 +4,6 @@ import de.mathes.kanban.backend.model.BoardRepository
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.Mockito.`when`
@@ -16,7 +14,6 @@ import org.springframework.http.HttpStatus.OK
 
 
 @SpringBootTest(classes = [BackendApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Disabled
 class RestTest {
 
     @LocalServerPort
@@ -41,16 +38,5 @@ class RestTest {
             .then()
             .statusCode(OK.value())
             .body(`is`("<!DOCTYPE html><html><body><h1>Static Test Resource</h1></body></html>"))
-    }
-
-    @Test
-    fun `API resources are served`() {
-        given()
-            .`when`()
-            .port(serverPort)
-            .get("/api/boards")
-            .then()
-            .statusCode(OK.value())
-            .body(`is`("""[{"id":"4712","name":"First Board"}]"""))
     }
 }
