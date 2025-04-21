@@ -33,7 +33,6 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.25.2'
     implementation 'org.hibernate.orm:hibernate-community-dialects'
 
-//    runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testImplementation 'io.rest-assured:rest-assured'
@@ -53,7 +52,7 @@ tasks.named('test') {
 }
 
 tasks.register('copyFrontend', Copy) {
-//    dependsOn(project(':frontend').tasks.named('build'))
+    dependsOn(project(':frontend').tasks.named('build'))
     from project(':frontend').file('dist/todo-frontend/browser')
     into 'src/main/resources/static'
 }

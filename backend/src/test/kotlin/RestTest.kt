@@ -8,9 +8,9 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus.OK
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 
 @SpringBootTest(classes = [BackendApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -19,7 +19,7 @@ class RestTest {
     @LocalServerPort
     var serverPort: Int = 0
 
-    @MockBean
+    @MockitoBean
     lateinit var boardRepository: BoardRepository
 
     @BeforeEach

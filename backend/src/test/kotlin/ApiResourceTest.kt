@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @SpringBootTest(classes = [BackendApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ApiResourceTest {
@@ -20,7 +21,7 @@ class ApiResourceTest {
     @LocalServerPort
     var serverPort: Int = 0
 
-    @MockBean
+    @MockitoBean
     lateinit var userRepository: UserRepository
 
     private val passwordEncoder = BCryptPasswordEncoder()
