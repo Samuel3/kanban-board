@@ -1,4 +1,17 @@
+plugins {
+    id 'com.github.node-gradle.node' version '7.0.2' apply false
+}
+
+
 tasks.named('wrapper').configure {
     gradleVersion = '8.13'
     distributionType = Wrapper.DistributionType.ALL
+}
+
+// register task build for subproject frontend
+allprojects { project ->
+    if (project.name.startsWith("frontend")) {
+        project.plugins.apply("com.github.node-gradle.node")
+        project.tasks.register("build", NpmTask)
+    }
 }
