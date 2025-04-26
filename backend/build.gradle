@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.springframework.data:spring-data-keyvalue'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
-    implementation 'org.xerial:sqlite-jdbc:3.25.2'
+    implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
     implementation 'org.hibernate.orm:hibernate-community-dialects'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
