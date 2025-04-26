@@ -23,7 +23,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
             this.router.navigate(['/login']);
           }
         }
-        return throwError(err);
+        throw new Error(err.message);
       })
     );
   }
