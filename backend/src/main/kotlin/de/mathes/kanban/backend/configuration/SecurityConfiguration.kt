@@ -32,7 +32,7 @@ class SecurityConfiguration(val userService: UserService) {
             .httpBasic { basic ->
                 basic.authenticationEntryPoint { request, response, authException ->
                     // Nur für API-Endpunkte den 401 Status zurückgeben
-                    if (request.requestURI.startsWith("/api/")) {
+                    if (request.requestURI.startsWith("/api/") || request.requestURI.startsWith("/auth/")) {
                         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
                     }
                 }

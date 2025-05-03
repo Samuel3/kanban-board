@@ -44,6 +44,7 @@ export class LoginComponent {
   matcher = new MyErrorStateMatcher();
   httpClient = inject(HttpClient);
   router = inject(Router);
+  loginError = false;
 
   onKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
@@ -57,9 +58,15 @@ export class LoginComponent {
     );
     this.httpClient
       .get('auth/login', { headers: { "Authorization": `Basic ${authentication}` } })
-      .subscribe(_ => {
-        localStorage.setItem('auth', authentication);
-        this.router.navigate(['/']);
+      .subscribe({
+        complete: () => {
+          localStorage.setItem('auth', authentication);
+          this.loginError = false;
+          this.router.navigate(['/']);
+        },
+        error: _ => {
+          this.loginError = true;
+        }
       });
   }
 

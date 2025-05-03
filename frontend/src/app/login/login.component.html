@@ -16,6 +16,9 @@
       <mat-error>Please enter your password</mat-error>
     }
   </mat-form-field>
+  @if (loginError) {
+    <mat-error>Invalid username or password</mat-error>
+  }
   <button mat-raised-button color="primary" (click)="login()"
           [disabled]="usernameControl.hasError('required') || passwordControl.hasError('required')">Login
   </button>
