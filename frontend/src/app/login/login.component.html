@@ -1,0 +1,25 @@
+<div id="container">
+  <h1 mat-card-title>Login</h1>
+  <mat-form-field>
+    <mat-label>Username:</mat-label>
+    <input matInput [formControl]="usernameControl" [errorStateMatcher]="matcher">
+    @if (usernameControl.hasError('required')) {
+      <mat-error>Please enter your username</mat-error>
+    }
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Password:</mat-label>
+    <input matInput [formControl]="passwordControl" [errorStateMatcher]="matcher" type="password"
+           (keydown)="onKeyDown($event)">
+    @if (passwordControl.hasError('required')) {
+      <mat-error>Please enter your password</mat-error>
+    }
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="login()"
+          [disabled]="usernameControl.hasError('required') || passwordControl.hasError('required')">Login
+  </button>
+  <br>
+  <button mat-raised-button color="secondary" (click)="register()">Register
+  </button>
+</div>

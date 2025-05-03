@@ -11,3 +11,20 @@ This is a simple Kanban board that allows you to create, edit, and delete tasks.
 
 ## License
 This project is licensed under the Affero General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Run
+
+Start the backend server:
+```bash
+cd backend
+./gradlew bootRun
+```
+
+Start the frontend server:
+```bash
+cd frontend
+npm install
+npm run start-dev
+```
+
+Now open a browser under `http://localhost:4200` to see the frontend and `http://localhost:8080` to see the backend. The frontend will automatically connect to the backend.

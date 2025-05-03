@@ -1,4 +1,4 @@
-package de.mathes.kanban.backend.rest
+package de.mathes.kanban.backend.model
 
 import de.mathes.kanban.backend.model.Board
 import org.springframework.data.repository.CrudRepository

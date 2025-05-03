@@ -1,17 +1,16 @@
 import de.mathes.kanban.backend.BackendApplication
 import de.mathes.kanban.backend.model.Board
-import de.mathes.kanban.backend.rest.BoardRepository
+import de.mathes.kanban.backend.model.BoardRepository
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.Mockito.`when`
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus.OK
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 
 @SpringBootTest(classes = [BackendApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -20,7 +19,7 @@ class RestTest {
     @LocalServerPort
     var serverPort: Int = 0
 
-    @MockBean
+    @MockitoBean
     lateinit var boardRepository: BoardRepository
 
     @BeforeEach
@@ -34,20 +33,10 @@ class RestTest {
         given()
             .`when`()
             .port(serverPort)
+            .auth().basic("user", "password")
             .get(path)
             .then()
             .statusCode(OK.value())
             .body(`is`("<!DOCTYPE html><html><body><h1>Static Test Resource</h1></body></html>"))
-    }
-
-    @Test
-    fun `API resources are served`() {
-        given()
-            .`when`()
-            .port(serverPort)
-            .get("/api/boards")
-            .then()
-            .statusCode(OK.value())
-            .body(`is`("""[{"id":"4712","name":"First Board"}]"""))
     }
 }

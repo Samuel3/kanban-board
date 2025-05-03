@@ -1,8 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroupDirective, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroupDirective,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -51,10 +58,19 @@ export class OverviewComponent {
   dialog = inject(MatDialog);
 
   constructor(private router: Router) {
+    if (!localStorage.getItem('auth')) {
+      this.router.navigate(['/login']);
+    }
     console.log('OverviewComponent constructor');
-    this.httpClient.get<BoardDefinition[]>('api/boards').subscribe((data) => {
-      this.boards = data;
-    });
+    this.httpClient
+      .get<BoardDefinition[]>('api/boards', {
+        headers: {
+          Authorization: 'Basic ' + localStorage.getItem('auth'),
+        },
+      })
+      .subscribe((data) => {
+        this.boards = data;
+      });
   }
 
   openBoard(name: string) {
@@ -87,6 +103,13 @@ export class OverviewComponent {
   deleteBoard(id: string) {
     this.dialog.open(DeletionDialogComponent, {
       data: { id: id, name: name },
+    });
+  }
+
+  logout() {
+    this.httpClient.get('auth/logout').subscribe(() => {
+      localStorage.removeItem('auth');
+      this.router.navigate(['/login']);
     });
   }
 }
