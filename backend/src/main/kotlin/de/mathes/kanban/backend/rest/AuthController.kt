@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/auth")
 class AuthController(val userService: UserService) {
 
-
     @PostMapping("/register")
     fun register(@RequestBody userDto: UserDto) : ResponseEntity<Unit>{
         if (userService.findByUsername(userDto.name) == null) {

@@ -17,7 +17,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     }
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 403 || err.status === 401 || err.status === 500) {
+        if ((err.status === 403 || err.status === 401 || err.status === 500) && this.router.url !== '/login') {
           localStorage.removeItem('auth');
           if (this.router.url !== '/login') {
             this.router.navigate(['/login']);
