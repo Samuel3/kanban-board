@@ -42,7 +42,7 @@
     "@nx/jest": "20.8.1",
     "@nx/js": "20.8.1",
     "@nx/playwright": "20.8.1",
-    "@nx/workspace": "20.8.1",
+    "@nx/workspace": "21.0.3",
     "@playwright/test": "^1.44.1",
     "@schematics/angular": "19.2.9",
     "@swc-node/register": "1.9.2",
